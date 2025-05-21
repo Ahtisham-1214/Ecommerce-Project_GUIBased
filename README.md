@@ -1,4 +1,4 @@
-drop database ecommerce_db;
+
 create database ecommerce_db;
 use ecommerce_db;
 create table users(
