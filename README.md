@@ -1,29 +1,205 @@
+# Ecommerce Project (GUI Based)
 
-create database ecommerce_db;
-use ecommerce_db;
-create table users(
-    user_id int auto_increment primary key,
-    username varchar(50) not null unique,
-    email varchar(100) not null unique,
-    password varchar(255) not null,
-    full_name varchar(100),
-    phone_number varchar(20),
-    address text
+> **Note:** Database schema is still being finalized. This document will be updated as changes are made.
+
+![Database Design](src/Database-EER-Diagram.png)
+
+---
+
+## 📋 Table of Contents
+
+- [Project Overview](#project-overview)
+- [Database Tables](#database-tables)
+  - [Users Table](#users)
+  - [Categories Table](#categories)
+  - [Cart Table](#cart)
+  - [Products Table](#products)
+  - [Orders Table](#orders)
+  - [Sellers Table](#sellers)
+  - [Addresses Table](#addresses)
+  - [Payment Options Table](#paymentoptions)
+- [Sample Data](#sample-data)
+- [Usage](#usage)
+- [Contributing](#contributing)
+
+---
+
+## 📝 Project Overview
+
+This project is a GUI-based ecommerce platform. The backend is powered by a relational database designed to handle users, products, orders, and more.  
+The schema is designed for flexibility and scalability as the project evolves.
+
+---
+
+## 🗄️ Database Tables
+### Users
+
+```sql
+CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  full_name VARCHAR(100),
+  phone_number VARCHAR(20),
+  address TEXT
 );
-select * from users;
-drop table products;
-create table products (
-    id int auto_increment primary key,
-    name varchar(255) not null,
-    brand varchar(100),
-    model varchar(100),
-    product_description text,
-    price decimal(10,2) not null ,
-    quantity int not null default 1 check(quantity >=0),
-    is_available boolean default true
+```
+
+[//]: # (Didn't finalized this column yet)
+
+[//]: # (ALTER TABLE users ADD COLUMN user_type VARCHAR&#40;20&#41; NOT NULL;)
+
+
+---
+
+### Categories
+
+```sql
+CREATE TABLE categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  type ENUM('new', 'old') NOT NULL,
+  description TEXT
 );
+```
+
+---
 
 
+### Cart
+
+```sql
+CREATE TABLE cart (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1
+);
+```
+
+---
+
+### Products
+
+
+[//]: # (This porduct table is not finalized)
+
+[//]: # (drop table products;)
+
+[//]: # (create table products &#40;)
+
+[//]: # (    id int auto_increment primary key,)
+
+[//]: # (    name varchar&#40;255&#41; not null,)
+
+[//]: # (    brand varchar&#40;100&#41;,)
+
+[//]: # (    model varchar&#40;100&#41;,)
+
+[//]: # (    product_description text,)
+
+[//]: # (    price decimal&#40;10,2&#41; not null ,)
+
+[//]: # (    quantity int not null default 1 check&#40;quantity >=0&#41;,)
+
+[//]: # (    is_available boolean default true)
+
+[//]: # (&#41;;)
+
+ALTER TABLE products ADD COLUMN seller_id INT; -- Not sure about this
+
+[//]: # (Currently using this table for products)
+
+```sql
+CREATE TABLE products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  category_id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  brand VARCHAR(100),
+  model VARCHAR(100),
+  product_description TEXT,
+  price DECIMAL(10,2) NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  is_available BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+);
+```
+
+
+
+---
+
+### Orders
+
+```sql
+CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  orders_user_id INT NOT NULL,
+  order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  total_amount DECIMAL(10,2) NOT NULL,
+  status ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
+  payment_status ENUM('pending', 'paid', 'failed') DEFAULT 'pending',
+  FOREIGN KEY (orders_user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+```
+
+---
+
+### Sellers
+
+```sql
+CREATE TABLE sellers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) UNIQUE,
+  password VARCHAR(100) -- Consider hashing for security
+);
+```
+
+---
+
+### Addresses
+
+```sql
+CREATE TABLE addresses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  street VARCHAR(100),
+  city VARCHAR(50),
+  state VARCHAR(50),
+  zip VARCHAR(10),
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+```
+
+---
+
+
+
+### PaymentOptions
+
+```sql
+CREATE TABLE payment_options (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  card_number VARCHAR(20),
+  card_holder VARCHAR(100),
+  expiry_date VARCHAR(10),
+  cvv VARCHAR(4),
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+```
+
+---
+
+## 🧪 Sample Data
+
+<details>
+<summary>Click to expand sample data</summary>
+
+```sql
+
+[//]: # (Dummy Data, recommended to use personal)
 INSERT INTO products ( name, brand, model, product_description, price, quantity, is_available) VALUES
 ( 'iPhone 14', 'Apple', '14', 'Latest Apple iPhone with A15 Bionic chip', 999.99, 50, 1),
 ( 'Samsung Galaxy S21', 'Samsung', 'S21', 'Flagship Samsung Galaxy S21 with 5G support', 799.99, 60, 1),
@@ -54,53 +230,6 @@ INSERT INTO products ( name, brand, model, product_description, price, quantity,
 ( 'Oppo Reno 6', 'Oppo', 'Reno 6', 'Oppo Reno 6 with MediaTek Dimensity 900', 499.99, 70, 1),
 ( 'Vivo Y20', 'Vivo', 'Y20', 'Vivo Y20 with Snapdragon 460 and 5000mAh battery', 149.99, 180, 1);
 
-
-select * from products;
-
-
-
-
-
-
-
-
-ALTER TABLE users ADD COLUMN user_type VARCHAR(20) NOT NULL;
-
-create table categories (
-    id int auto_increment primary key,
-    name varchar(100) not null,
-    type enum('new', 'old') not null,
-    description text
-);
-create table products (
-    id int auto_increment primary key,
-    category_id int not null,
-    name varchar(255) not null,
-    brand varchar(100),
-    model varchar(100),
-    product_description text,
-    price decimal(10,2) not null,
-    quantity int not null default 1,
-    is_available boolean default true,
-    foreign key (category_id) references categories(id) on delete cascade
-);
-create table orders (
-    id int auto_increment primary key,
-    orders_user_id int not null,
-    order_date timestamp default current_timestamp,
-    total_amount decimal(10,2) not null,
-    status enum('pending', 'confirmed', 'shipped', 'delivered', 'cancelled') default 'pending',
-    payment_status enum('pending', 'paid', 'failed') default 'pending',
-    foreign key (orders_user_id) references users(user_id) on delete cascade
-);
-
-CREATE TABLE cart (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL DEFAULT 1
-);
-SELECT * FROM categories;
 INSERT INTO categories (id, name) VALUES
 (1, 'Electronics'),
 (2, 'Mobile Phones'),
@@ -137,44 +266,32 @@ INSERT INTO products (category_id, name, brand, model, product_description, pric
 (2, 'Oppo Reno 6', 'Oppo', 'Reno 6', 'Oppo Reno 6 with MediaTek Dimensity 900', 499.99, 70, 1),
 (2, 'Vivo Y20', 'Vivo', 'Y20', 'Vivo Y20 with Snapdragon 460 and 5000mAh battery', 149.99, 180, 1);
 
-
 INSERT INTO users (username, email, acc_password, user_type, full_name, phone_number, address) VALUES
-('ahmed_siddiqui', 'ahmed.siddiqui@example.com', 'password123', 'buyer', 'Ahmed Siddiqui', '03011234567', '123 Main Street, Lahore, Pakistan'),
-('fatima_khan', 'fatima.khan@example.com', 'password456', 'seller', 'Fatima Khan', '03123456789', '456 Faisal Town, Karachi, Pakistan'),
-('ali_zaidi', 'ali.zaidi@example.com', 'password789', 'buyer', 'Ali Zaidi', '03211234567', '789 Gulberg, Islamabad, Pakistan'),
-('hassan_abbas', 'hassan.abbas@example.com', 'password101', 'seller', 'Hassan Abbas', '03334567890', '101 Johar Town, Lahore, Pakistan'),
-('layla_bashir', 'layla.bashir@example.com', 'password202', 'buyer', 'Layla Bashir', '03451234567', '202 Bahria Town, Rawalpindi, Pakistan'),
-('muhammad_akhtar', 'muhammad.akhtar@example.com', 'password303', 'seller', 'Muhammad Akhtar', '03567890123', '303 Model Town, Karachi, Pakistan'),
-('sara_shah', 'sara.shah@example.com', 'password404', 'buyer', 'Sara Shah', '03678901234', '404 Green Street, Quetta, Pakistan'),
-('bilal_rahman', 'bilal.rahman@example.com', 'password505', 'seller', 'Bilal Rahman', '03789012345', '505 F-10, Islamabad, Pakistan'),
-('zahra_jamil', 'zahra.jamil@example.com', 'password606', 'buyer', 'Zahra Jamil', '03890123456', '606 Peshawar Road, Lahore, Pakistan'),
-('omar_mirza', 'omar.mirza@example.com', 'password707', 'seller', 'Omar Mirza', '03901234567', '707 Rawalpindi, Pakistan');
-ALTER TABLE products ADD COLUMN seller_id INT;
+('ahmed_siddiqui', 'ahmed.siddiqui@example.com', 'password123', 'buyer', 'Ahmed Siddiqui', '03011234567', '123 Main
+Street, Lahore, Pakistan'),
+('fatima_khan', 'fatima.khan@example.com', 'password456', 'seller', 'Fatima Khan', '03123456789', '456 Faisal Town,
+Karachi, Pakistan'),
+('ali_zaidi', 'ali.zaidi@example.com', 'password789', 'buyer', 'Ali Zaidi', '03211234567', '789 Gulberg, Islamabad,
+Pakistan'),
+('hassan_abbas', 'hassan.abbas@example.com', 'password101', 'seller', 'Hassan Abbas', '03334567890', '101 Johar Town,
+Lahore, Pakistan'),
+('layla_bashir', 'layla.bashir@example.com', 'password202', 'buyer', 'Layla Bashir', '03451234567', '202 Bahria Town,
+Rawalpindi, Pakistan'),
+('muhammad_akhtar', 'muhammad.akhtar@example.com', 'password303', 'seller', 'Muhammad Akhtar', '03567890123', '303 Model
+Town, Karachi, Pakistan'),
+('sara_shah', 'sara.shah@example.com', 'password404', 'buyer', 'Sara Shah', '03678901234', '404 Green Street, Quetta,
+Pakistan'),
+('bilal_rahman', 'bilal.rahman@example.com', 'password505', 'seller', 'Bilal Rahman', '03789012345', '505 F-10,
+Islamabad, Pakistan'),
+('zahra_jamil', 'zahra.jamil@example.com', 'password606', 'buyer', 'Zahra Jamil', '03890123456', '606 Peshawar Road,
+Lahore, Pakistan'),
+('omar_mirza', 'omar.mirza@example.com', 'password707', 'seller', 'Omar Mirza', '03901234567', '707 Rawalpindi,
+Pakistan');
 
-CREATE TABLE sellers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE,
-    password VARCHAR(100) -- Consider hashing for security
-);
-CREATE TABLE addresses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    street VARCHAR(100),
-    city VARCHAR(50),
-    state VARCHAR(50),
-    zip VARCHAR(10),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
+```
+</details>
+---
 
-CREATE TABLE payment_options (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    card_number VARCHAR(20),
-    card_holder VARCHAR(100),
-    expiry_date VARCHAR(10),
-    cvv VARCHAR(4),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
 
 select * from users;
 select * from products;
@@ -184,7 +301,17 @@ select * from cart;
 select * from order_products;
 
 
+## 🚀 Usage
 
+1. Clone the repository.
+2. Set up your database using the provided schema.
+3. Insert sample data if needed.
+4. Run the application.
+
+---
+
+
+**Enjoy building your ecommerce platform!**
 
 
 
