@@ -292,14 +292,29 @@ Pakistan');
 </details>
 ---
 
+## 📊 Quick SQL Queries
 
-select * from users;
-select * from products;
-select * from orders;
-select * from categories;
-select * from cart;
-select * from order_products;
+```sql
+SELECT * FROM users;
+SELECT * FROM products;
+SELECT * FROM orders;
+SELECT * FROM categories;
+SELECT * FROM cart;
+SELECT * FROM order_products;
+```
 
+---
+
+## ✨ Features
+
+- User registration and authentication
+- Product catalog with categories
+- Shopping cart functionality
+- Order management
+- Seller and buyer roles
+- Address and payment management
+
+---
 
 ## 🚀 Usage
 
