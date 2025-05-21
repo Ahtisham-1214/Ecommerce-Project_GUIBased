@@ -95,10 +95,11 @@ public class LoginGui extends guis.BaseFrame {
 
         // Register Label
         gbc.gridy++;
-        JLabel registerLabel = new JLabel("<html><a href=\"#\">Don't have an account? Register Here</a></html>");
+        JLabel registerLabel = new JLabel("<html><center>Don't have an account? <a href='' style='color:#0066CC;text-decoration:none'>Register here</a></center></html>");
+        registerLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Hand cursor on hover
         registerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         registerLabel.setFont(new Font("Dialog", Font.PLAIN, 16));
-        registerLabel.setForeground(Color.BLUE);  // Set font color here
+        registerLabel.setForeground(Color.BLACK);  // Set font color here
         add(registerLabel, gbc);
 
         // ActionListener
