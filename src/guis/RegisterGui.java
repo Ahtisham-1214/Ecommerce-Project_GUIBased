@@ -112,6 +112,8 @@ public class RegisterGui extends BaseFrame {
         loginLabel.setFont(new Font("Dialog", Font.PLAIN, 16));
         loginLabel.setForeground(Color.BLACK);  // Set font color here
         add(loginLabel, gbc);
+
+        getRootPane().setDefaultButton(registerButton); // Set default button to register button
         // Register Action
         registerButton.addActionListener(e -> {
             String username = usernameField.getText();
@@ -127,18 +129,39 @@ public class RegisterGui extends BaseFrame {
             if (fullName.isEmpty() || phone.isEmpty() || address.isEmpty() ||
                     email.isEmpty() || username.isEmpty() || password.isEmpty() ||
                     rePassword.isEmpty() || gender.isEmpty()) {
-
-                JOptionPane.showMessageDialog(this, "Please fill in all fields, including gender.");
+                JOptionPane.showMessageDialog(this, "Please fill all fields", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (!fullName.matches("^[a-zA-Z]+$")) { // Regex for only Alphabetic name
+                JOptionPane.showMessageDialog(this, "Invalid full name", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if (!phone.matches("^[0-9]{11}$")) { // Regex for only numbers and 11 digits
+                JOptionPane.showMessageDialog(this, "Invalid phone number", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            else if (!username.matches("^[a-zA-Z0-9]+$")) { // Regex for only Alphanumeric
+                JOptionPane.showMessageDialog(null, "Username can only contain letters and numbers", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (!password.matches("^[a-zA-Z0-9]+$")) {
+                JOptionPane.showMessageDialog(null, "Password can only contain letters and numbers", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (!email.matches("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) { // Regex for only Email address
+                JOptionPane.showMessageDialog(this, "Invalid email address", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (!password.equals(rePassword)) {
-                JOptionPane.showMessageDialog(this, "Passwords do not match.");
+                JOptionPane.showMessageDialog(this, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (username.length() < 6) {
                 JOptionPane.showMessageDialog(this, "Username must be at least 6 characters.");
+                return;
+            } else if (!username.matches("^[a-zA-Z0-9]+$")) { // Regex for only Alphanumeric
+                JOptionPane.showMessageDialog(null, "Username can only contain letters and numbers", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (!password.matches("^[a-zA-Z0-9]+$")) {
+                JOptionPane.showMessageDialog(null, "Password can only contain letters and numbers", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -165,6 +188,7 @@ public class RegisterGui extends BaseFrame {
                 new LoginGui().setVisible(true);
             }
         });
+
     }
 
     private void addLabelAndField(String labelText, JComponent field, GridBagConstraints gbc, int y) {
