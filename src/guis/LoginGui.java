@@ -103,6 +103,7 @@ public class LoginGui extends guis.BaseFrame {
         add(registerLabel, gbc);
 
         // ActionListener
+        getRootPane().setDefaultButton(loginButton); // Set default button to login button
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = String.valueOf(passwordField.getPassword()).trim();
