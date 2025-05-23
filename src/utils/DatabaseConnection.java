@@ -29,7 +29,7 @@ public class DatabaseConnection {
                 System.out.println("Database connection successful!");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());;
         }
     }
 }
