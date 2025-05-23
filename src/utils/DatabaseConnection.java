@@ -1,15 +1,35 @@
 package utils;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DatabaseConnection {
-    public static Connection getConnection() {
+    private static final String databaseName = "ecommerce_db"; // change it accordingly
+    private static final String URL = "jdbc:mysql://localhost:3306/" + databaseName;
+    private static final String USER = "root";  // change it accordingly
+    private static final String PASSWORD = "ahtisham123";  // change it accordingly
+
+    static {
         try {
-            return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/ecommerce_db", "root", "Root"
-            );
-        } catch (SQLException e) {
-            System.out.println("Error connecting to database: " + e.getMessage());
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Failed to load MySQL JDBC driver", e);
         }
-        return null;
+    }
+
+    public static Connection getConnection() throws SQLException {
+        // Return a new database connection
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+    public static void main(String[] args) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            if (connection != null) {
+                System.out.println("Database connection successful!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
