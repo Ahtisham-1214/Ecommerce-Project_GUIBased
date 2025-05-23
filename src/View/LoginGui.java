@@ -1,4 +1,4 @@
-package guis;
+package View;
 
 import MobileManager.*;
 
@@ -7,8 +7,6 @@ import db_objs.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -16,7 +14,7 @@ import java.awt.event.MouseEvent;
     This gui will allow user to login or launch the register gui
     This extends from the BaseFrame which emans we will need to define our own addGuiComponent()
  */
-public class LoginGui extends guis.BaseFrame {
+public class LoginGui extends View.BaseFrame {
     public LoginGui() {
         super("Mobile App Store");
         //set background color

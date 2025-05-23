@@ -1,4 +1,4 @@
-package guis;
+package View;
 
 import db_objs.MyJDBC;
 
