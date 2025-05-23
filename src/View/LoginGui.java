@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 /*
     This gui will allow user to login or launch the register gui
@@ -21,7 +22,7 @@ public class LoginGui extends View.BaseFrame {
 //        getContentPane().setBackground(new Color(255, 204, 204));
 
         // Load the icon image
-        ImageIcon icon = new ImageIcon(getClass().getResource("/login.png"));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/login.png")));
         // Replace with the actual path to your image file
 
         // Set the icon for the JFrame
@@ -121,13 +122,13 @@ public class LoginGui extends View.BaseFrame {
                 if (user != null) {
                     LoginGui.this.dispose();
                     JOptionPane.showMessageDialog(null, "Login Successfully!");
-//                     Close login window
+//                     Close, login window
                     dispose();
 
                     // Open Mobile Management Panel
                     SwingUtilities.invokeLater(() -> {
                         JFrame frame = new JFrame("MobiLink Mobile Store");
-                        ImageIcon frameIcon = new ImageIcon(MobileManagementPanel.class.getResource("/login.png"));
+                        ImageIcon frameIcon = new ImageIcon("/resources/login.png");
                         frame.setIconImage(frameIcon.getImage());
                         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         frame.getContentPane().add(new MobileManagementPanel());
