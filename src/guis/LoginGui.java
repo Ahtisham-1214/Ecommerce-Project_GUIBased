@@ -138,7 +138,7 @@ public class LoginGui extends guis.BaseFrame {
                         frame.setVisible(true);
                     });
                 } else {
-                    JOptionPane.showMessageDialog(LoginGui.this, "Login failed...");
+                    JOptionPane.showMessageDialog(LoginGui.this, "Login failed...", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
