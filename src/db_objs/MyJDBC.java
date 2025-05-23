@@ -1,43 +1,36 @@
 package db_objs;
 
+import utils.DatabaseConnection;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 public class MyJDBC {
-    // Database configurations
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/ecommerce_db";
-    private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "Root";
 
     // Establish a connection
     private static Connection connection;
-//Connection Method getConnection
-    public static Connection getConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
+
+//    MyJDBC() throws SQLException {
+//        connection = DatabaseConnection.getConnection();
+//    }
+
     // Validate Login
     public static User validateLogin(String username, String password) {
         String query = "SELECT * FROM users WHERE LOWER(username) = LOWER(?) AND password = ?";
 
-        try (Connection conn = getConnection()) {
-            if (conn == null) {
+        try {
+            connection = DatabaseConnection.getConnection();
+            if (connection == null) {
                 System.out.println("Database connection failed.");
                 return null;
             }
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, username.trim());
             stmt.setString(2, password.trim()); // match plain password
 
             System.out.println("Trying to login with: " + username + " | " + password); // Debug cmd command
-        // stmt represents a precompiled SQL statement that you can execute
+            // stmt represents a precompiled SQL statement that you can execute
             // multiple times with different parameters.
             ResultSet rs = stmt.executeQuery();
 //rs.next(): This method moves the cursor in the ResultSet to the next row.
@@ -56,14 +49,11 @@ public class MyJDBC {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return null;
     }
-
-
-
 
 
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
@@ -78,10 +68,10 @@ public class MyJDBC {
 
     // Register a new user
     public static boolean register(String username, String email, String password, String fullName, String phone, String address) {
-        try (Connection conn = getConnection()) {
+        try {
             String sql = "INSERT INTO users (username, email, password, full_name, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, username);
             stmt.setString(2, email);
             stmt.setString(3, password); // store plain password
@@ -94,7 +84,7 @@ public class MyJDBC {
         } catch (SQLIntegrityConstraintViolationException e) {
             return false;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -102,15 +92,15 @@ public class MyJDBC {
 
     // Check if the username already exists
     private static boolean checkUser(String username) {
-        try (Connection conn = getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+        try {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
 
             // If the query returns no result, the username is available
             return rs.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return false;
     }
