@@ -1,4 +1,4 @@
-import guis.LoginGui;
+import View.LoginGui;
 
 import javax.swing.*;
 

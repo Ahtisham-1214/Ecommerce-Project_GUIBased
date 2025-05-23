@@ -1,10 +1,11 @@
-package guis;
+package View;
 
 import db_objs.MyJDBC;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class RegisterGui extends BaseFrame {
 
@@ -13,7 +14,7 @@ public class RegisterGui extends BaseFrame {
         //set background color
 //        getContentPane().setBackground(new Color(255, 204, 204));
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/login.png"));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/login.png")));
         setIconImage(icon.getImage());
         setSize(700, 700);
         setLocationRelativeTo(null);
