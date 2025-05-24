@@ -1,6 +1,6 @@
 package View;
 
-import Database.MyJDBC;
+import Model.MyJDBC;
 
 import javax.swing.*;
 import java.awt.*;

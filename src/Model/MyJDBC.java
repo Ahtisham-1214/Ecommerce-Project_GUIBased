@@ -1,6 +1,6 @@
-package Database;
+package Model;
 
-import utils.DatabaseConnection;
+import Backend.User;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
