@@ -1,4 +1,4 @@
-package db_objs;
+package Database;
 
 public class User {
     private int id;

@@ -1,4 +1,4 @@
-package db_objs;
+package Database;
 
 import utils.DatabaseConnection;
 
@@ -50,6 +50,8 @@ public class MyJDBC {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         return null;
