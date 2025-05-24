@@ -1,6 +1,6 @@
 package View;
 
-import db_objs.User;
+import Backend.User;
 
 import javax.swing.*;
 

@@ -2,8 +2,8 @@ package View;
 
 import MobileManager.*;
 
-import db_objs.MyJDBC;
-import db_objs.User;
+import Model.MyJDBC;
+import Backend.User;
 
 import javax.swing.*;
 import java.awt.*;

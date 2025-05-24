@@ -1,6 +1,6 @@
-package entities;
+package Backend.entities;
 
-import utils.DatabaseConnection;
+import Model.DatabaseConnection;
 
 import java.sql.*;
 import java.util.Scanner;

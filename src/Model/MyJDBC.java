@@ -1,6 +1,6 @@
-package db_objs;
+package Model;
 
-import utils.DatabaseConnection;
+import Backend.User;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -50,6 +50,8 @@ public class MyJDBC {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         return null;

@@ -1,3 +1,5 @@
+import Model.DatabaseConnection;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -11,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CartFrame {
     private static JTable table;
@@ -38,7 +41,7 @@ public class CartFrame {
         frame.getContentPane().setBackground(new Color(0xF5F1EC));
         frame.setLayout(new BorderLayout(20, 20));
         try {
-            ImageIcon icon = new ImageIcon(CartFrame.class.getResource("login.png"));
+            ImageIcon icon = new ImageIcon(Objects.requireNonNull(CartFrame.class.getResource("/resources/login.png")));
             frame.setIconImage(icon.getImage());
         } catch (Exception e) {
             System.out.println("Failed to load icon: " + e.getMessage());
@@ -173,7 +176,7 @@ public class CartFrame {
         List<Object[]> rows = new ArrayList<>();
 
         try {
-            Connection con = utils.DatabaseConnection.getConnection(); // Assuming db.DB contains the getConnection method
+            Connection con = DatabaseConnection.getConnection(); // Assuming db.DB contains the getConnection method
             PreparedStatement ps = con.prepareStatement(
                     "SELECT p.name, c.quantity, p.price, (p.price * c.quantity) AS Total " +
                             "FROM cart c JOIN products p ON c.product_id = p.id WHERE c.user_id = ?"
@@ -212,7 +215,7 @@ public class CartFrame {
 
     private static void clearCart(int cartId) {
         try {
-            Connection con = utils.DatabaseConnection.getConnection(); // Assuming db.DB contains the getConnection method
+            Connection con = DatabaseConnection.getConnection(); // Assuming db.DB contains the getConnection method
             PreparedStatement ps = con.prepareStatement("DELETE FROM cart WHERE user_id = ?");
             ps.setInt(1, cartId);
             int rowsAffected = ps.executeUpdate(); // Use rowsAffected to confirm the DELETE query worked

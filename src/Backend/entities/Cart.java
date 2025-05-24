@@ -1,5 +1,5 @@
-package entities;
-import utils.DatabaseConnection;
+package Backend.entities;
+import Model.DatabaseConnection;
 
 import java.sql.*;
 

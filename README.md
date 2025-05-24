@@ -1,15 +1,15 @@
 # Ecommerce Project (GUI Based)
 
-> **Note:** Database schema is still being finalized. This document will be updated as changes are made.
+> **Note:** Model schema is still being finalized. This document will be updated as changes are made.
 
-![Database Design](src/Database-EER-Diagram.png)
+![Model Design](src/resources/Database-EER-Diagram.png)
 
 ---
 
 ## 📋 Table of Contents
 
 - [Project Overview](#project-overview)
-- [Database Tables](#database-tables)
+- [Model Tables](#database-tables)
   - [Users Table](#users)
   - [Categories Table](#categories)
   - [Cart Table](#cart)
@@ -31,7 +31,7 @@ The schema is designed for flexibility and scalability as the project evolves.
 
 ---
 
-## 🗄️ Database Tables
+## 🗄️ Model Tables
 ### Users
 
 ```sql
