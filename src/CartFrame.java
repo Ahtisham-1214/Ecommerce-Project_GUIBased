@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CartFrame {
     private static JTable table;
@@ -38,7 +39,7 @@ public class CartFrame {
         frame.getContentPane().setBackground(new Color(0xF5F1EC));
         frame.setLayout(new BorderLayout(20, 20));
         try {
-            ImageIcon icon = new ImageIcon(CartFrame.class.getResource("login.png"));
+            ImageIcon icon = new ImageIcon(Objects.requireNonNull(CartFrame.class.getResource("/resources/login.png")));
             frame.setIconImage(icon.getImage());
         } catch (Exception e) {
             System.out.println("Failed to load icon: " + e.getMessage());
