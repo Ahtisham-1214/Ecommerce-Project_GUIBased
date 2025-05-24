@@ -1,4 +1,4 @@
-package entities;
+package Backend.entities;
 import utils.DatabaseConnection;
 
 

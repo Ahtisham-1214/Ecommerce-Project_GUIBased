@@ -1,4 +1,4 @@
-package Database;
+package Backend;
 
 public class User {
     private int id;
