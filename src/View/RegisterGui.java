@@ -10,7 +10,7 @@ import java.util.Objects;
 public class RegisterGui extends BaseFrame {
 
     public RegisterGui() {
-        super("Mobile App Store");
+        super("Register");
         //set background color
 //        getContentPane().setBackground(new Color(255, 204, 204));
 
