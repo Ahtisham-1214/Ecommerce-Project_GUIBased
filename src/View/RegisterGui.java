@@ -1,6 +1,6 @@
 package View;
 
-import Model.MyJDBC;
+import Model.UserDatabase;
 
 import javax.swing.*;
 import java.awt.*;
@@ -167,7 +167,7 @@ public class RegisterGui extends BaseFrame {
             }
 
             if (validateUserInput(username, password, rePassword)) {
-                if (MyJDBC.register(username, email, password, fullName, phone, address)) {
+                if (UserDatabase.register(username, email, password, fullName, phone, address)) {
                     this.dispose();
                     LoginGui loginGui = new LoginGui();
                     loginGui.setVisible(true);
