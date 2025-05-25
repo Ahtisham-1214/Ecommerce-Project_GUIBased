@@ -1,7 +1,5 @@
 package View;
 
-import MobileManager.*;
-
 import Model.UserDatabase;
 import Backend.User;
 
@@ -17,7 +15,7 @@ import java.util.Objects;
  */
 public class LoginGui extends View.BaseFrame {
     public LoginGui() {
-        super("Mobile App Store");
+        super("Login");
         //set background color
 //        getContentPane().setBackground(new Color(255, 204, 204));
 
@@ -63,7 +61,7 @@ public class LoginGui extends View.BaseFrame {
         usernameField.setFont(new Font("Dialog", Font.PLAIN, 20));
         add(usernameField, gbc);
 
-        // Password
+        // Password field section
         gbc.gridx = 0;
         gbc.gridy++;
         JLabel passwordLabel = new JLabel("Password:");
@@ -121,17 +119,17 @@ public class LoginGui extends View.BaseFrame {
                 User user = UserDatabase.validateLogin(username, password);
                 if (user != null) {
                     LoginGui.this.dispose();
-                    JOptionPane.showMessageDialog(null, "Login Successfully!");
+//                    JOptionPane.showMessageDialog(null, "Login Successfully!");
 //                     Close, login window
                     dispose();
 
-                    // Open Mobile Management Panel
+                    // Open Dashboard Panel
                     SwingUtilities.invokeLater(() -> {
                         JFrame frame = new JFrame("MobiLink Mobile Store");
                         ImageIcon frameIcon = new ImageIcon("/resources/login.png");
                         frame.setIconImage(frameIcon.getImage());
                         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                        frame.getContentPane().add(new MobileManagementPanel());
+                        frame.getContentPane().add(new DashboardPanel("Dashboard"));
                         frame.pack();
                         frame.setLocationRelativeTo(null);
                         frame.setVisible(true);
