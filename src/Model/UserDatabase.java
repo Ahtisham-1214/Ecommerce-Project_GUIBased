@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
-public class MyJDBC {
+public class UserDatabase {
 
     // Establish a connection
     private static Connection connection;
@@ -71,6 +71,7 @@ public class MyJDBC {
     // Register a new user
     public static boolean register(String username, String email, String password, String fullName, String phone, String address) {
         try {
+            connection = DatabaseConnection.getConnection();
             String sql = "INSERT INTO users (username, email, password, full_name, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement stmt = connection.prepareStatement(sql);

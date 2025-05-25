@@ -2,7 +2,7 @@ package View;
 
 import MobileManager.*;
 
-import Model.MyJDBC;
+import Model.UserDatabase;
 import Backend.User;
 
 import javax.swing.*;
@@ -118,7 +118,7 @@ public class LoginGui extends View.BaseFrame {
             } else if (!password.matches("^[a-zA-Z0-9]+$")) {
                 JOptionPane.showMessageDialog(null, "Password can only contain letters and numbers", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                User user = MyJDBC.validateLogin(username, password);
+                User user = UserDatabase.validateLogin(username, password);
                 if (user != null) {
                     LoginGui.this.dispose();
                     JOptionPane.showMessageDialog(null, "Login Successfully!");
