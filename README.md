@@ -18,6 +18,7 @@
   - [Sellers Table](#sellers)
   - [Addresses Table](#addresses)
   - [Payment Options Table](#paymentoptions)
+  - - [Customer Table](#customers)
 - [Sample Data](#sample-data)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -156,6 +157,22 @@ CREATE TABLE sellers (
 );
 ```
 
+---
+
+### Customers
+```sql
+create table customers
+(
+    customer_id   int auto_increment
+        primary key,
+    name          varchar(20)  not null,
+    email         varchar(50)  null,
+    address       varchar(100) not null,
+    phone_number  varchar(11)  not null,
+    customer_type bit          not null
+);
+
+```
 ---
 
 ### Addresses
