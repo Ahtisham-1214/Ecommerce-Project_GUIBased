@@ -129,7 +129,7 @@ public class LoginGui extends View.BaseFrame {
                         ImageIcon frameIcon = new ImageIcon("/resources/login.png");
                         frame.setIconImage(frameIcon.getImage());
                         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                        frame.getContentPane().add(new DashboardPanel("Dashboard"));
+                        frame.getContentPane().add(new DashboardPanel("Dashboard", user));
                         frame.pack();
                         frame.setLocationRelativeTo(null);
                         frame.setVisible(true);
