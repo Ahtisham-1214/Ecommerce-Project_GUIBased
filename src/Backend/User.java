@@ -1,5 +1,5 @@
 package Backend;
-
+import Model.UserDatabase;
 public class User {
     private int id;
     private String username, password, fullName, phone, address, email;
@@ -12,6 +12,11 @@ public class User {
         this.setPhone(phone);
         this.setAddress(address);
         this.setEmail(email);
+    }
+
+    public void updateUser(){
+        System.out.println(this.getId() + " " + this.getFullName() + " " + this.getPhone() + " " + this.getAddress() + " " + this.getEmail());
+        UserDatabase.updateUser(this.getId(), this.getUsername(), this.getFullName(), this.getPhone(), this.getAddress(), this.getEmail());
     }
 
     public void setId(int id) {
