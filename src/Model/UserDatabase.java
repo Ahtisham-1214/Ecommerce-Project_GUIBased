@@ -92,6 +92,36 @@ public class UserDatabase {
         }
     }
 
+    public static void updateUser(int userId, String userName, String fullName, String phone, String address, String email) {
+        try {
+            connection = DatabaseConnection.getConnection();
+            String query = "UPDATE users SET username = ?, full_name = ?, phone_number = ?, address = ?, email = ? WHERE user_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userName);
+            stmt.setString(2, fullName);
+            stmt.setString(3, phone);
+            stmt.setString(4, address);
+            stmt.setString(5, email);
+            stmt.setInt(6, userId);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("User not found or no data was updated");
+            }
+
+            System.out.println("User updated successfully.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update user: " + e.getMessage());
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing connection: " + e.getMessage());
+                }
+            }
+        }
+    }
 
     // Check if the username already exists
     private static boolean checkUser(String username) {
