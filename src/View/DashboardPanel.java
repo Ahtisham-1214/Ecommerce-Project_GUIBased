@@ -1,12 +1,20 @@
 package View;
 
+import Backend.User;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class DashboardPanel extends JPanel {
+    private User currentUser;
+
     public DashboardPanel(String title) {
+        this(title, null);
+    }
+
+    public DashboardPanel(String title, User user) {
+        this.currentUser = user;
         setLayout(new GridBagLayout());
         SwingUtilities.invokeLater(() -> {
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -77,7 +85,11 @@ public class DashboardPanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(DashboardPanel.this);
                 currentFrame.getContentPane().removeAll();
-                currentFrame.getContentPane().add(new UserPanel("User Profile"));
+                UserPanel userPanel = new UserPanel("User Profile");
+                if (currentUser != null) {
+                    userPanel.setUser(currentUser);
+                }
+                currentFrame.getContentPane().add(userPanel);
                 currentFrame.getContentPane().revalidate();
                 currentFrame.getContentPane().repaint();
             }
