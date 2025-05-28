@@ -135,7 +135,7 @@ public class LoginGui extends View.BaseFrame {
                         frame.setVisible(true);
                     });
                 } else {
-                    JOptionPane.showMessageDialog(LoginGui.this, "Login failed...", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginGui.this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
