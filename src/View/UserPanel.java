@@ -5,8 +5,6 @@ import Backend.User;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -85,8 +83,8 @@ public class UserPanel extends JPanel {
 
         // Add a bottom border to create separation
         headerPanel.setBorder(BorderFactory.createCompoundBorder(
-            headerPanel.getBorder(),
-            BorderFactory.createMatteBorder(0, 0, 2, 0, ACCENT_COLOR)
+                headerPanel.getBorder(),
+                BorderFactory.createMatteBorder(0, 0, 2, 0, ACCENT_COLOR)
         ));
 
         add(headerPanel, BorderLayout.NORTH);
@@ -133,16 +131,16 @@ public class UserPanel extends JPanel {
         userIdField.setFont(FIELD_FONT);
         userIdField.setBackground(new Color(230, 230, 230)); // Darker background for non-editable field
         userIdField.setBorder(BorderFactory.createCompoundBorder(
-            userIdField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                userIdField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
 
         usernameField = new JTextField(15);
         usernameField.setFont(FIELD_FONT);
         usernameField.setBackground(FIELD_BG_COLOR);
         usernameField.setBorder(BorderFactory.createCompoundBorder(
-            usernameField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                usernameField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
         // Add focus listeners for visual feedback
         addFocusEffect(usernameField);
@@ -151,8 +149,8 @@ public class UserPanel extends JPanel {
         passwordField.setFont(FIELD_FONT);
         passwordField.setBackground(FIELD_BG_COLOR);
         passwordField.setBorder(BorderFactory.createCompoundBorder(
-            passwordField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                passwordField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
         addFocusEffect(passwordField);
 
@@ -160,8 +158,8 @@ public class UserPanel extends JPanel {
         newPasswordField.setFont(FIELD_FONT);
         newPasswordField.setBackground(FIELD_BG_COLOR);
         newPasswordField.setBorder(BorderFactory.createCompoundBorder(
-            newPasswordField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                newPasswordField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
         addFocusEffect(newPasswordField);
 
@@ -169,8 +167,8 @@ public class UserPanel extends JPanel {
         emailField.setFont(FIELD_FONT);
         emailField.setBackground(FIELD_BG_COLOR);
         emailField.setBorder(BorderFactory.createCompoundBorder(
-            emailField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                emailField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
         addFocusEffect(emailField);
 
@@ -178,8 +176,8 @@ public class UserPanel extends JPanel {
         fullNameField.setFont(FIELD_FONT);
         fullNameField.setBackground(FIELD_BG_COLOR);
         fullNameField.setBorder(BorderFactory.createCompoundBorder(
-            fullNameField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                fullNameField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
         addFocusEffect(fullNameField);
 
@@ -187,8 +185,8 @@ public class UserPanel extends JPanel {
         phoneNumberField.setFont(FIELD_FONT);
         phoneNumberField.setBackground(FIELD_BG_COLOR);
         phoneNumberField.setBorder(BorderFactory.createCompoundBorder(
-            phoneNumberField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                phoneNumberField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
         addFocusEffect(phoneNumberField);
 
@@ -196,8 +194,8 @@ public class UserPanel extends JPanel {
         addressField.setFont(FIELD_FONT);
         addressField.setBackground(FIELD_BG_COLOR);
         addressField.setBorder(BorderFactory.createCompoundBorder(
-            addressField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                addressField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
         addFocusEffect(addressField);
 
@@ -223,19 +221,9 @@ public class UserPanel extends JPanel {
         updatePasswordButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
 
         // Add action listeners
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateUserProfile();
-            }
-        });
+        updateButton.addActionListener(e -> updateUserProfile());
 
-        updatePasswordButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateUserPassword();
-            }
-        });
+        updatePasswordButton.addActionListener(e -> updateUserPassword());
 
         // Initialize back button with styling
         backButton = new JButton("Back");
@@ -248,19 +236,16 @@ public class UserPanel extends JPanel {
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
 
-        // Add action listener for back button
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Go back to previous screen
-                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(UserPanel.this);
-                if (currentFrame != null) {
-                    currentFrame.getContentPane().removeAll();
-                    DashboardPanel dashboardPanel = new DashboardPanel("Dashboard", currentUser);
-                    currentFrame.getContentPane().add(dashboardPanel);
-                    currentFrame.getContentPane().revalidate();
-                    currentFrame.getContentPane().repaint();
-                }
+        // Add action listener for the back button
+        backButton.addActionListener(e -> {
+            // Go back to the previous screen
+            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(UserPanel.this);
+            if (currentFrame != null) {
+                currentFrame.getContentPane().removeAll();
+                DashboardPanel dashboardPanel = new DashboardPanel("Dashboard", currentUser);
+                currentFrame.getContentPane().add(dashboardPanel);
+                currentFrame.getContentPane().revalidate();
+                currentFrame.getContentPane().repaint();
             }
         });
     }
@@ -270,25 +255,25 @@ public class UserPanel extends JPanel {
         JPanel contentPanel = new JPanel(new GridBagLayout());
         contentPanel.setBackground(SECONDARY_COLOR);
         contentPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-            BorderFactory.createEmptyBorder(20, 20, 20, 20)
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10); // More spacing between components
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Make components fill horizontal space
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Make components fill the horizontal space
 
         // Create a panel for account info
         JPanel accountPanel = new JPanel(new GridBagLayout());
         accountPanel.setBackground(SECONDARY_COLOR);
         accountPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(PRIMARY_COLOR),
-            "Account Information",
-            TitledBorder.LEFT,
-            TitledBorder.TOP,
-            LABEL_FONT,
-            PRIMARY_COLOR
+                BorderFactory.createLineBorder(PRIMARY_COLOR),
+                "Account Information",
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                LABEL_FONT,
+                PRIMARY_COLOR
         ));
 
         GridBagConstraints accountGbc = new GridBagConstraints();
@@ -316,7 +301,7 @@ public class UserPanel extends JPanel {
         accountGbc.weightx = 0.7;
         accountPanel.add(usernameField, accountGbc);
 
-        // Add account panel to content panel
+        // Add an account panel to a content panel
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 3;
@@ -327,12 +312,12 @@ public class UserPanel extends JPanel {
         JPanel passwordPanel = new JPanel(new GridBagLayout());
         passwordPanel.setBackground(SECONDARY_COLOR);
         passwordPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(PRIMARY_COLOR),
-            "Password Management",
-            TitledBorder.LEFT,
-            TitledBorder.TOP,
-            LABEL_FONT,
-            PRIMARY_COLOR
+                BorderFactory.createLineBorder(PRIMARY_COLOR),
+                "Password Management",
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                LABEL_FONT,
+                PRIMARY_COLOR
         ));
 
         GridBagConstraints passwordGbc = new GridBagConstraints();
@@ -381,12 +366,12 @@ public class UserPanel extends JPanel {
         JPanel personalPanel = new JPanel(new GridBagLayout());
         personalPanel.setBackground(SECONDARY_COLOR);
         personalPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(PRIMARY_COLOR),
-            "Personal Information",
-            TitledBorder.LEFT,
-            TitledBorder.TOP,
-            LABEL_FONT,
-            PRIMARY_COLOR
+                BorderFactory.createLineBorder(PRIMARY_COLOR),
+                "Personal Information",
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                LABEL_FONT,
+                PRIMARY_COLOR
         ));
 
         GridBagConstraints personalGbc = new GridBagConstraints();
@@ -434,7 +419,7 @@ public class UserPanel extends JPanel {
         personalGbc.weightx = 0.7;
         personalPanel.add(addressField, personalGbc);
 
-        // Add personal panel to content panel
+        // Add a personal panel to a content panel
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 3;
@@ -470,44 +455,55 @@ public class UserPanel extends JPanel {
     }
 
     private void updateUserProfile() {
-        // This method would update the user profile in the database
-        // For now, just show a styled message
+        try {
+            currentUser.setUsername(usernameField.getText());
+            currentUser.setFullName(fullNameField.getText());
+            currentUser.setPhone(phoneNumberField.getText());
+            currentUser.setAddress(addressField.getText());
+            currentUser.setEmail(emailField.getText());
 
-        // Create a custom panel for the message
-        JPanel messagePanel = new JPanel(new BorderLayout(10, 10));
-        messagePanel.setBackground(Color.WHITE);
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+            currentUser.updateUser();
 
-        // Add an icon
-        JLabel iconLabel = new JLabel(UIManager.getIcon("OptionPane.informationIcon"));
-        messagePanel.add(iconLabel, BorderLayout.WEST);
 
-        // Add a styled message
-        JLabel messageLabel = new JLabel("<html><div style='width: 250px'>" +
-                "<p style='font-family: Segoe UI; font-size: 14px; color: #333333;'>" +
-                "Profile update functionality will be implemented in the future.</p>" +
-                "<p style='font-family: Segoe UI; font-size: 12px; color: #666666; margin-top: 10px;'>" +
-                "Your profile information will be securely stored and updated when this feature is available.</p>" +
-                "</div></html>");
-        messagePanel.add(messageLabel, BorderLayout.CENTER);
+            // Create a custom panel for the message
+            JPanel messagePanel = new JPanel(new BorderLayout(10, 10));
+            messagePanel.setBackground(Color.WHITE);
+            messagePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // Show the custom dialog
-        JOptionPane optionPane = new JOptionPane(
-                messagePanel,
-                JOptionPane.PLAIN_MESSAGE,
-                JOptionPane.DEFAULT_OPTION,
-                null,
-                new Object[]{"OK"},
-                "OK");
+            // Add an icon
+            JLabel iconLabel = new JLabel(UIManager.getIcon("OptionPane.informationIcon"));
+            messagePanel.add(iconLabel, BorderLayout.WEST);
 
-        JDialog dialog = optionPane.createDialog(this, "Update Profile");
-        dialog.setBackground(Color.WHITE);
-        dialog.setVisible(true);
+            // Add a styled message
+            JLabel messageLabel = new JLabel("<html><div style='width: 250px'>" +
+                    "<p style='font-family: Segoe UI; font-size: 14px; color: #333333;'>" +
+                    "Profile updated Successfully</p>" +
+                    "<p style='font-family: Segoe UI; font-size: 12px; color: #666666; margin-top: 10px;'>" +
+                    "Your profile information will be securely stored and updated when this feature is available.</p>" +
+                    "</div></html>");
+            messagePanel.add(messageLabel, BorderLayout.CENTER);
+
+            // Show the custom dialog
+            JOptionPane optionPane = new JOptionPane(
+                    messagePanel,
+                    JOptionPane.PLAIN_MESSAGE,
+                    JOptionPane.DEFAULT_OPTION,
+                    null,
+                    new Object[]{"OK"},
+                    "OK");
+
+            JDialog dialog = optionPane.createDialog(this, "Update Profile");
+            dialog.setBackground(Color.WHITE);
+            dialog.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Failed to Update profile " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     private void updateUserPassword() {
         // This method would update the user password in the database
-        // For now, just show a styled message
+        // For now, show a styled message
 
         // Create a custom panel for the message
         JPanel messagePanel = new JPanel(new BorderLayout(10, 10));
@@ -554,15 +550,15 @@ public class UserPanel extends JPanel {
             public void focusGained(FocusEvent e) {
                 // Change border color and background when focused
                 textField.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(ACCENT_COLOR, 2),
-                    BorderFactory.createEmptyBorder(4, 4, 4, 4)
+                        BorderFactory.createLineBorder(ACCENT_COLOR, 2),
+                        BorderFactory.createEmptyBorder(4, 4, 4, 4)
                 ));
                 textField.setBackground(new Color(255, 255, 240)); // Light yellow background
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                // Restore original border and background when focus is lost
+                // Restore the original border and background when focus is lost
                 textField.setBorder(originalBorder);
                 textField.setBackground(FIELD_BG_COLOR);
             }
@@ -574,8 +570,8 @@ public class UserPanel extends JPanel {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 if (!textField.hasFocus()) {
                     textField.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(new Color(180, 180, 180)),
-                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                            BorderFactory.createLineBorder(new Color(180, 180, 180)),
+                            BorderFactory.createEmptyBorder(5, 5, 5, 5)
                     ));
                 }
             }
