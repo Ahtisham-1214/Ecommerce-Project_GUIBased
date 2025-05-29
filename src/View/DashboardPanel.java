@@ -1,6 +1,7 @@
 package View;
 
 import Backend.User;
+import MobileManager.MobileManagementPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -34,17 +35,25 @@ public class DashboardPanel extends JPanel {
         gbc.anchor = GridBagConstraints.NORTH;
 
 
-        // Add a card-like label with image
-        JPanel cardPanel = createCardPanel();
+        // Add card-like labels with images
+        JPanel userCardPanel = createUserCardPanel();
+        JPanel productCardPanel = createProductCardPanel();
+
+        // Create a panel to hold both cards side by side
+        JPanel cardsContainer = new JPanel(new GridLayout(1, 2, 20, 0));
+        cardsContainer.setOpaque(false);
+        cardsContainer.add(userCardPanel);
+        cardsContainer.add(productCardPanel);
+
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.CENTER;
-        add(cardPanel, gbc);
+        add(cardsContainer, gbc);
 
         // Set panel properties
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     }
 
-    private JPanel createCardPanel() {
+    private JPanel createUserCardPanel() {
         // Create a panel with border layout
         JPanel cardPanel = new JPanel(new BorderLayout(10, 10));
         cardPanel.setBackground(Color.WHITE);
@@ -90,6 +99,56 @@ public class DashboardPanel extends JPanel {
                     userPanel.setUser(currentUser);
                 }
                 currentFrame.getContentPane().add(userPanel);
+                currentFrame.getContentPane().revalidate();
+                currentFrame.getContentPane().repaint();
+            }
+        });
+        return cardPanel;
+    }
+
+    private JPanel createProductCardPanel() {
+        // Create a panel with border layout
+        JPanel cardPanel = new JPanel(new BorderLayout(10, 10));
+        cardPanel.setBackground(Color.WHITE);
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
+
+        // Add drop shadow effect
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createEmptyBorder(2, 2, 5, 5),
+                        BorderFactory.createEmptyBorder(15, 15, 15, 15)
+                )
+        ));
+
+        // Load and scale the image
+        ImageIcon imageIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/product.png")));
+        Image image = imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(image));
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        // Create text label
+        JLabel textLabel = new JLabel("Product");
+        textLabel.setFont(new Font(textLabel.getFont().getName(), Font.BOLD, 16));
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        // Add components to the card panel
+        cardPanel.add(imageLabel, BorderLayout.CENTER);
+        cardPanel.add(textLabel, BorderLayout.SOUTH);
+
+        // Set preferred size for the card
+        cardPanel.setPreferredSize(new Dimension(150, 180));
+
+        cardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(DashboardPanel.this);
+                currentFrame.getContentPane().removeAll();
+                ProductPanel productPanel = new ProductPanel("Product Management");
+                currentFrame.getContentPane().add(productPanel);
                 currentFrame.getContentPane().revalidate();
                 currentFrame.getContentPane().repaint();
             }
