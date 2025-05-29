@@ -123,6 +123,33 @@ public class UserDatabase {
         }
     }
 
+    public static void updateUser(int userId, String newPassword) {
+        try {
+            connection = DatabaseConnection.getConnection();
+            String query = "UPDATE users SET password = ? WHERE user_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, newPassword);
+            stmt.setInt(2, userId);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("User not found or password not updated");
+            }
+
+            System.out.println("Password updated successfully.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update Password: " + e.getMessage());
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing connection: " + e.getMessage());
+                }
+            }
+        }
+    }
+
     // Check if the username already exists
     private static boolean checkUser(String username) {
         try {

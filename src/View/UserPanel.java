@@ -42,6 +42,7 @@ public class UserPanel extends JPanel {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JPasswordField newPasswordField;
+    private JPasswordField reNewPasswordField;
     private JTextField emailField;
     private JTextField fullNameField;
     private JTextField phoneNumberField;
@@ -162,6 +163,15 @@ public class UserPanel extends JPanel {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
         addFocusEffect(newPasswordField);
+
+        reNewPasswordField = new JPasswordField(15);
+        reNewPasswordField.setFont(FIELD_FONT);
+        reNewPasswordField.setBackground(FIELD_BG_COLOR);
+        reNewPasswordField.setBorder(BorderFactory.createCompoundBorder(
+                reNewPasswordField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        addFocusEffect(reNewPasswordField);
 
         emailField = new JTextField(15);
         emailField.setFont(FIELD_FONT);
@@ -348,9 +358,23 @@ public class UserPanel extends JPanel {
         passwordGbc.weightx = 0.7;
         passwordPanel.add(newPasswordField, passwordGbc);
 
+        // Re type new Password
+        passwordGbc.gridx = 0;
+        passwordGbc.gridy = 2;
+        passwordGbc.weightx = 0.7;
+        JLabel reNewPasswordLabel = new JLabel("Re-type New Password:");
+        reNewPasswordLabel.setFont(LABEL_FONT);
+        reNewPasswordLabel.setForeground(TEXT_COLOR);
+        passwordPanel.add(reNewPasswordLabel, passwordGbc);
+
+        passwordGbc.gridx = 1;
+        passwordGbc.weightx = 0.7;
+        passwordPanel.add(reNewPasswordField, passwordGbc);
+
+
         // Update Password Button
         passwordGbc.gridx = 1;
-        passwordGbc.gridy = 2;
+        passwordGbc.gridy = 3;
         passwordGbc.anchor = GridBagConstraints.EAST;
         passwordGbc.fill = GridBagConstraints.NONE;
         passwordPanel.add(updatePasswordButton, passwordGbc);
@@ -479,7 +503,7 @@ public class UserPanel extends JPanel {
                     "<p style='font-family: Segoe UI; font-size: 14px; color: #333333;'>" +
                     "Profile updated Successfully</p>" +
                     "<p style='font-family: Segoe UI; font-size: 12px; color: #666666; margin-top: 10px;'>" +
-                    "Your profile information will be securely stored and updated when this feature is available.</p>" +
+                    "Your profile information is updated in Database</p>" +
                     "</div></html>");
             messagePanel.add(messageLabel, BorderLayout.CENTER);
 
@@ -502,43 +526,63 @@ public class UserPanel extends JPanel {
     }
 
     private void updateUserPassword() {
-        // This method would update the user password in the database
-        // For now, show a styled message
+            try {
+                String newPassword = newPasswordField.getText();
+                String reNewPassword = reNewPasswordField.getText();
 
-        // Create a custom panel for the message
-        JPanel messagePanel = new JPanel(new BorderLayout(10, 10));
-        messagePanel.setBackground(Color.WHITE);
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+                // Create a custom panel for the message
+                JPanel messagePanel = new JPanel(new BorderLayout(10, 10));
+                messagePanel.setBackground(Color.WHITE);
+                messagePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // Add an icon
-        JLabel iconLabel = new JLabel(UIManager.getIcon("OptionPane.informationIcon"));
-        messagePanel.add(iconLabel, BorderLayout.WEST);
+                // Add an icon
+                JLabel iconLabel = new JLabel(UIManager.getIcon("OptionPane.informationIcon"));
+                messagePanel.add(iconLabel, BorderLayout.WEST);
 
-        // Add a styled message
-        JLabel messageLabel = new JLabel("<html><div style='width: 250px'>" +
-                "<p style='font-family: Segoe UI; font-size: 14px; color: #333333;'>" +
-                "Password update functionality will be implemented in the future.</p>" +
-                "<p style='font-family: Segoe UI; font-size: 12px; color: #666666; margin-top: 10px;'>" +
-                "Your password will be securely updated when this feature is available.</p>" +
-                "</div></html>");
-        messagePanel.add(messageLabel, BorderLayout.CENTER);
+                String message;
+                if (newPassword.equals(reNewPassword)) {
+                    message = "<html><div style='width: 250px'>" +
+                            "<p style='font-family: Segoe UI; font-size: 14px; color: #00FF00;'>" +
+                            "Password updated Successfully!</p>" +
+                            "<p style='font-family: Segoe UI; font-size: 12px; color: #666666; margin-top: 10px;'>" +
+                            "Your password is updated in Database</p>" +
+                            "</div></html>";
+                    currentUser.updateUser(newPassword);
+                } else {
+                    message = "<html><div style='width: 250px'>" +
+                            "<p style='font-family: Segoe UI; font-size: 14px; color: #FF0000;'>" +
+                            "Passwords do not match!</p>" +
+                            "<p style='font-family: Segoe UI; font-size: 12px; color: #666666; margin-top: 10px;'>" +
+                            "Please make sure both passwords are identical</p>" +
+                            "</div></html>";
+                }
 
-        // Show the custom dialog
-        JOptionPane optionPane = new JOptionPane(
-                messagePanel,
-                JOptionPane.PLAIN_MESSAGE,
-                JOptionPane.DEFAULT_OPTION,
-                null,
-                new Object[]{"OK"},
-                "OK");
+                // Add a styled message
+                JLabel messageLabel = new JLabel(message);
+                messagePanel.add(messageLabel, BorderLayout.CENTER);
 
-        JDialog dialog = optionPane.createDialog(this, "Update Password");
-        dialog.setBackground(Color.WHITE);
-        dialog.setVisible(true);
+                // Show the custom dialog
+                JOptionPane optionPane = new JOptionPane(
+                        messagePanel,
+                        JOptionPane.PLAIN_MESSAGE,
+                        JOptionPane.DEFAULT_OPTION,
+                        null,
+                        new Object[]{"OK"},
+                        "OK");
+
+                JDialog dialog = optionPane.createDialog(this, "Update Password");
+                dialog.setBackground(Color.WHITE);
+                dialog.setVisible(true);
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Failed to Update password " + e.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
     }
-
     /**
      * Adds focus effects to text fields for better visual feedback
+     *
      * @param textField The text field to enhance with focus effects
      */
     private void addFocusEffect(JTextField textField) {

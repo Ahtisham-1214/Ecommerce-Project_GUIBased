@@ -19,6 +19,11 @@ public class User {
         UserDatabase.updateUser(this.getId(), this.getUsername(), this.getFullName(), this.getPhone(), this.getAddress(), this.getEmail());
     }
 
+    public void updateUser(String newPassword) throws Exception{
+        this.setPassword(newPassword);
+        UserDatabase.updateUser(this.getId(), this.getPassword());
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -38,7 +43,7 @@ public class User {
     }
 
     public void setFullName(String fullName) throws Exception {
-        if (!fullName.matches("^[a-zA-Z]+$"))
+        if (!fullName.matches("^[a-zA-Z]+( [a-zA-Z]+)*$")) // Allow spaces between name
             throw new IllegalArgumentException("Full name must contain only letters");
         this.fullName = fullName;
     }
