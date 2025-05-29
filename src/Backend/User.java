@@ -19,6 +19,11 @@ public class User {
         UserDatabase.updateUser(this.getId(), this.getUsername(), this.getFullName(), this.getPhone(), this.getAddress(), this.getEmail());
     }
 
+    public void updateUser(String newPassword) throws Exception{
+        this.setPassword(newPassword);
+        UserDatabase.updateUser(this.getId(), this.getPassword());
+    }
+
     public void setId(int id) {
         this.id = id;
     }
