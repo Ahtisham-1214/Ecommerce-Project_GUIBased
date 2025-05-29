@@ -132,7 +132,7 @@ public class RegisterGui extends BaseFrame {
                     rePassword.isEmpty() || gender.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please fill all fields", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
-            } else if (!fullName.matches("^[a-zA-Z]+$")) { // Regex for only Alphabetic name
+            } else if (!fullName.matches("^[a-zA-Z]+( [a-zA-Z]+)*$")) { // Regex for only Alphabetic with spaces between name
                 JOptionPane.showMessageDialog(this, "Invalid full name", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }else if (!phone.matches("^[0-9]{11}$")) { // Regex for only numbers and 11 digits
