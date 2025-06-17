@@ -7,7 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.sql.*;
-import entities.Product;
+import Backend.entities.Product;
 
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;

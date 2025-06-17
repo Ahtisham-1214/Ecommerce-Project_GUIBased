@@ -8,7 +8,7 @@ public class DatabaseConnection {
     private static final String databaseName = "ecommerce_db"; // change it accordingly
     private static final String URL = "jdbc:mysql://localhost:3306/" + databaseName;
     private static final String USER = "root";  // change it accordingly
-    private static final String PASSWORD = "ahtisham123";  // change it accordingly
+    private static final String PASSWORD = "Root";  // change it accordingly
 
     static {
         try {
