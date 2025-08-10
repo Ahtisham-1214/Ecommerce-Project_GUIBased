@@ -25,24 +25,53 @@ public class RegisterGui extends BaseFrame {
     @Override
     protected void addGuiComponents() {
         setLayout(new GridBagLayout());
+        setBackground(new Color(245, 245, 250));
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(15, 20, 15, 20); // more padding
+        gbc.insets = new Insets(15, 20, 15, 20);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.WEST;
+        // Card panel for registration form
+        JPanel cardPanel = new JPanel(new GridBagLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(Color.WHITE);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+            }
+        };
+        cardPanel.setOpaque(false);
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+                BorderFactory.createEmptyBorder(30, 30, 30, 30)));
 
-        int y = 0;
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 10, 10, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+
+        // Logo
+        JLabel logoLabel = new JLabel();
+        logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/login.png")));
+        Image logoImg = logoIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        logoLabel.setIcon(new ImageIcon(logoImg));
+        cardPanel.add(logoLabel, c);
 
         // Title
+        c.gridy++;
         JLabel titleLabel = new JLabel("Mobilink");
         titleLabel.setFont(new Font("Ravie", Font.BOLD, 30));
-        gbc.gridx = 1;
-        gbc.gridy = y++;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        add(titleLabel, gbc);
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.WEST;
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        cardPanel.add(titleLabel, c);
+
+        c.gridwidth = 1;
+        c.anchor = GridBagConstraints.WEST;
 
         // Fields
         JTextField nameField = new JTextField(25);
@@ -53,16 +82,22 @@ public class RegisterGui extends BaseFrame {
         JPasswordField passwordField = new JPasswordField(25);
         JPasswordField rePasswordField = new JPasswordField(25);
 
-        addLabelAndField("Full Name:", nameField, gbc, y++);
-        addLabelAndField("Phone Number:", phoneField, gbc, y++);
-        addLabelAndField("Address:", addressField, gbc, y++);
-        addLabelAndField("Email:", emailField, gbc, y++);
-        addLabelAndField("Username:", usernameField, gbc, y++);
+        // Tooltips
+        emailField.setToolTipText("Enter a valid email address");
+        passwordField.setToolTipText("Password must be alphanumeric");
+        rePasswordField.setToolTipText("Re-type your password");
+
+        int y = 2;
+        addLabelAndFieldToPanel("Full Name:", nameField, cardPanel, c, y++);
+        addLabelAndFieldToPanel("Phone Number:", phoneField, cardPanel, c, y++);
+        addLabelAndFieldToPanel("Address:", addressField, cardPanel, c, y++);
+        addLabelAndFieldToPanel("Email:", emailField, cardPanel, c, y++);
+        addLabelAndFieldToPanel("Username:", usernameField, cardPanel, c, y++);
 
         // Gender
-        gbc.gridx = 0;
-        gbc.gridy = y;
-        add(new JLabel("Gender:"), gbc);
+        c.gridx = 0;
+        c.gridy = y;
+        cardPanel.add(new JLabel("Gender:"), c);
 
         JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         JRadioButton maleButton = new JRadioButton("Male");
@@ -73,48 +108,50 @@ public class RegisterGui extends BaseFrame {
         genderPanel.add(maleButton);
         genderPanel.add(femaleButton);
 
-        gbc.gridx = 1;
-        add(genderPanel, gbc);
+        c.gridx = 1;
+        cardPanel.add(genderPanel, c);
         y++;
 
-        addLabelAndField("Password:", passwordField, gbc, y++);
-        addLabelAndField("Re-type Password:", rePasswordField, gbc, y++);
+        addLabelAndFieldToPanel("Password:", passwordField, cardPanel, c, y++);
+        addLabelAndFieldToPanel("Re-type Password:", rePasswordField, cardPanel, c, y++);
 
         // Register Button
         JButton registerButton = new JButton("Register");
         registerButton.setFont(new Font("Dialog", Font.BOLD, 18));
-        gbc.gridx = 1;
-        gbc.gridy = y++;
-        gbc.gridwidth = 150;
-        // Prevent the layout from stretching the button
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-
-        gbc.gridwidth = 1;
-        registerButton.setBackground(new Color(220, 20, 60)); // Crimson red
-        registerButton.setPreferredSize(new Dimension(120, 40)); // Set width and height
-        registerButton.setForeground(Color.WHITE);// White text
-        registerButton.setFocusPainted(false); // Optional: no focus border
+        c.gridx = 1;
+        c.gridy = y++;
+        c.gridwidth = 150;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.CENTER;
+        registerButton.setBackground(new Color(220, 20, 60));
+        registerButton.setPreferredSize(new Dimension(120, 40));
+        registerButton.setForeground(Color.WHITE);
+        registerButton.setFocusPainted(false);
         registerButton.setBorder(BorderFactory.createEtchedBorder());
-        add(registerButton, gbc);
-        // Register Button
-//        y += ySpacing;
-//        JButton registerButton = new JButton("Register");
-//        registerButton.setBounds(150, y, 150, 35);  // Slightly smaller button height
-//        registerButton.setFont(new Font("Dialog", Font.BOLD, 18));  // Slightly smaller font
-//
-//
+        cardPanel.add(registerButton, c);
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.WEST;
 
         // Login link
-        gbc.gridy++;
+        c.gridy++;
         JLabel loginLabel = new JLabel("<html><center>Already have an account? <a href='' style='color:#0066CC;text-decoration:none'>Sign in here</a></center></html>");
-        loginLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Hand cursor on hover
+        loginLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
         loginLabel.setFont(new Font("Dialog", Font.PLAIN, 16));
-        loginLabel.setForeground(Color.BLACK);  // Set font color here
-        add(loginLabel, gbc);
+        loginLabel.setForeground(Color.BLACK);
+        cardPanel.add(loginLabel, c);
 
-        getRootPane().setDefaultButton(registerButton); // Set default button to register button
+        // Add cardPanel to main frame
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        add(cardPanel, gbc);
+
+        getRootPane().setDefaultButton(registerButton);
+
         // Register Action
         registerButton.addActionListener(e -> {
             String username = usernameField.getText();
@@ -132,20 +169,20 @@ public class RegisterGui extends BaseFrame {
                     rePassword.isEmpty() || gender.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please fill all fields", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
-            } else if (!fullName.matches("^[a-zA-Z]+( [a-zA-Z]+)*$")) { // Regex for only Alphabetic with spaces between name
+            } else if (!fullName.matches("^[a-zA-Z]+( [a-zA-Z]+)*$")) {
                 JOptionPane.showMessageDialog(this, "Invalid full name", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
-            }else if (!phone.matches("^[0-9]{11}$")) { // Regex for only numbers and 11 digits
+            }else if (!phone.matches("^[0-9]{11}$")) {
                 JOptionPane.showMessageDialog(this, "Invalid phone number", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            else if (!username.matches("^[a-zA-Z0-9]+$")) { // Regex for only Alphanumeric
+            else if (!username.matches("^[a-zA-Z0-9]+$")) {
                 JOptionPane.showMessageDialog(null, "Username can only contain letters and numbers", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (!password.matches("^[a-zA-Z0-9]+$")) {
                 JOptionPane.showMessageDialog(null, "Password can only contain letters and numbers", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
-            } else if (!email.matches("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) { // Regex for only Email address
+            } else if (!email.matches("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
                 JOptionPane.showMessageDialog(this, "Invalid email address", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -158,7 +195,7 @@ public class RegisterGui extends BaseFrame {
             if (username.length() < 6) {
                 JOptionPane.showMessageDialog(this, "Username must be at least 6 characters.");
                 return;
-            } else if (!username.matches("^[a-zA-Z0-9]+$")) { // Regex for only Alphanumeric
+            } else if (!username.matches("^[a-zA-Z0-9]+$")) {
                 JOptionPane.showMessageDialog(null, "Username can only contain letters and numbers", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (!password.matches("^[a-zA-Z0-9]+$")) {
@@ -189,7 +226,15 @@ public class RegisterGui extends BaseFrame {
                 new LoginGui().setVisible(true);
             }
         });
+    }
 
+    // Helper to add label and field to card panel
+    private void addLabelAndFieldToPanel(String labelText, JComponent field, JPanel panel, GridBagConstraints c, int y) {
+        c.gridx = 0;
+        c.gridy = y;
+        panel.add(new JLabel(labelText), c);
+        c.gridx = 1;
+        panel.add(field, c);
     }
 
     private void addLabelAndField(String labelText, JComponent field, GridBagConstraints gbc, int y) {
