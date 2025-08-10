@@ -25,6 +25,9 @@ public class ProductPanel extends JPanel {
     // Panel components
     private JPanel headerPanel;
     private JLabel titleLabel;
+    private JLabel imagePreviewLabel;
+    private JButton imageUploadButton;
+    private ImageIcon productImageIcon;
 
     // Labels
     private JLabel idLabel;
@@ -91,6 +94,21 @@ public class ProductPanel extends JPanel {
     }
 
     private void initializeComponents() {
+    // Product image preview and upload
+    imagePreviewLabel = new JLabel();
+    imagePreviewLabel.setPreferredSize(new Dimension(120, 120));
+    imagePreviewLabel.setBorder(BorderFactory.createLineBorder(PRIMARY_COLOR, 1));
+    imagePreviewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    imagePreviewLabel.setToolTipText("Product image preview");
+    imageUploadButton = new JButton("Upload Image");
+    imageUploadButton.setFont(BUTTON_FONT);
+    imageUploadButton.setBackground(ACCENT_COLOR);
+    imageUploadButton.setForeground(Color.WHITE);
+    imageUploadButton.setFocusPainted(false);
+    imageUploadButton.setBorderPainted(false);
+    imageUploadButton.setOpaque(true);
+    imageUploadButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    imageUploadButton.setToolTipText("Upload a product image");
         // Initialize labels with styling
         idLabel = new JLabel("ID:");
         idLabel.setFont(LABEL_FONT);
@@ -242,69 +260,78 @@ public class ProductPanel extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make components fill the horizontal space
 
-        // Create a panel for product info
-        JPanel productPanel = new JPanel(new GridBagLayout());
-        productPanel.setBackground(SECONDARY_COLOR);
-        productPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(PRIMARY_COLOR),
-                "Product Information",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                LABEL_FONT,
-                PRIMARY_COLOR
-        ));
+    // Create a panel for product info
+    JPanel productPanel = new JPanel(new GridBagLayout());
+    productPanel.setBackground(SECONDARY_COLOR);
+    productPanel.setBorder(BorderFactory.createTitledBorder(
+        BorderFactory.createLineBorder(PRIMARY_COLOR),
+        "Product Information",
+        TitledBorder.LEFT,
+        TitledBorder.TOP,
+        LABEL_FONT,
+        PRIMARY_COLOR
+    ));
 
-        GridBagConstraints productGbc = new GridBagConstraints();
-        productGbc.insets = new Insets(5, 10, 5, 10);
-        productGbc.anchor = GridBagConstraints.WEST;
-        productGbc.fill = GridBagConstraints.HORIZONTAL;
+    GridBagConstraints productGbc = new GridBagConstraints();
+    productGbc.insets = new Insets(5, 10, 5, 10);
+    productGbc.anchor = GridBagConstraints.WEST;
+    productGbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // ID
-        productGbc.gridx = 0;
-        productGbc.gridy = 0;
-        productGbc.weightx = 0.3;
-        productPanel.add(idLabel, productGbc);
+    // Image preview and upload
+    productGbc.gridx = 0;
+    productGbc.gridy = 0;
+    productGbc.gridwidth = 2;
+    productPanel.add(imagePreviewLabel, productGbc);
+    productGbc.gridy = 1;
+    productPanel.add(imageUploadButton, productGbc);
+    productGbc.gridwidth = 1;
 
-        productGbc.gridx = 1;
-        productGbc.weightx = 0.7;
-        productPanel.add(idField, productGbc);
+    // ID
+    productGbc.gridx = 0;
+    productGbc.gridy = 2;
+    productGbc.weightx = 0.3;
+    productPanel.add(idLabel, productGbc);
 
-        // Name
-        productGbc.gridx = 0;
-        productGbc.gridy = 1;
-        productGbc.weightx = 0.3;
-        productPanel.add(nameLabel, productGbc);
+    productGbc.gridx = 1;
+    productGbc.weightx = 0.7;
+    productPanel.add(idField, productGbc);
 
-        productGbc.gridx = 1;
-        productGbc.weightx = 0.7;
-        productPanel.add(nameField, productGbc);
+    // Name
+    productGbc.gridx = 0;
+    productGbc.gridy = 3;
+    productGbc.weightx = 0.3;
+    productPanel.add(nameLabel, productGbc);
 
-        // Brand
-        productGbc.gridx = 0;
-        productGbc.gridy = 2;
-        productGbc.weightx = 0.3;
-        productPanel.add(brandLabel, productGbc);
+    productGbc.gridx = 1;
+    productGbc.weightx = 0.7;
+    productPanel.add(nameField, productGbc);
 
-        productGbc.gridx = 1;
-        productGbc.weightx = 0.7;
-        productPanel.add(brandField, productGbc);
+    // Brand
+    productGbc.gridx = 0;
+    productGbc.gridy = 4;
+    productGbc.weightx = 0.3;
+    productPanel.add(brandLabel, productGbc);
 
-        // Model
-        productGbc.gridx = 0;
-        productGbc.gridy = 3;
-        productGbc.weightx = 0.3;
-        productPanel.add(modelLabel, productGbc);
+    productGbc.gridx = 1;
+    productGbc.weightx = 0.7;
+    productPanel.add(brandField, productGbc);
 
-        productGbc.gridx = 1;
-        productGbc.weightx = 0.7;
-        productPanel.add(modelField, productGbc);
+    // Model
+    productGbc.gridx = 0;
+    productGbc.gridy = 5;
+    productGbc.weightx = 0.3;
+    productPanel.add(modelLabel, productGbc);
 
-        // Add product panel to content panel
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 3;
-        gbc.weightx = 1.0;
-        contentPanel.add(productPanel, gbc);
+    productGbc.gridx = 1;
+    productGbc.weightx = 0.7;
+    productPanel.add(modelField, productGbc);
+
+    // Add product panel to content panel
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.gridwidth = 3;
+    gbc.weightx = 1.0;
+    contentPanel.add(productPanel, gbc);
 
         // Create a panel for details
         JPanel detailsPanel = new JPanel(new GridBagLayout());
@@ -416,7 +443,19 @@ public class ProductPanel extends JPanel {
     }
 
     private void setupListeners() {
-        btnSave.addActionListener(e -> {
+        // Image upload button
+    imageUploadButton.addActionListener(_ -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileChooser.getSelectedFile();
+                ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+                Image img = icon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+                productImageIcon = new ImageIcon(img);
+                imagePreviewLabel.setIcon(productImageIcon);
+            }
+        });
+    btnSave.addActionListener(_ -> {
             Product product = getProductData();
             if (product != null) {
                 try {
@@ -436,16 +475,16 @@ public class ProductPanel extends JPanel {
             }
         });
 
-        btnClear.addActionListener(e -> {
+    btnClear.addActionListener(_ -> {
             clearFields();
             // Provide subtle feedback
             btnClear.setBackground(new Color(80, 80, 80)); // Darker gray when clicked
-            Timer timer = new Timer(200, evt -> btnClear.setBackground(new Color(100, 100, 100)));
+            Timer timer = new Timer(200, _ -> btnClear.setBackground(new Color(100, 100, 100)));
             timer.setRepeats(false);
             timer.start();
         });
 
-        btnCancel.addActionListener(e -> {
+    btnCancel.addActionListener(_ -> {
             // Ask for confirmation before navigating away
             int response = JOptionPane.showConfirmDialog(
                     this,
@@ -499,7 +538,7 @@ public class ProductPanel extends JPanel {
                 "</div></html>");
         messagePanel.add(messageLabel, BorderLayout.CENTER);
 
-        // Show the custom dialog
+        // Show the custom dialog with subtle animation
         JOptionPane optionPane = new JOptionPane(
                 messagePanel,
                 JOptionPane.PLAIN_MESSAGE,
@@ -510,6 +549,13 @@ public class ProductPanel extends JPanel {
 
         JDialog dialog = optionPane.createDialog(this, title);
         dialog.setBackground(Color.WHITE);
+        // Animation: fade in
+        for (float opacity = 0.0f; opacity <= 1.0f; opacity += 0.1f) {
+            try {
+                dialog.setOpacity(opacity);
+                Thread.sleep(15);
+            } catch (Exception ignored) {}
+        }
         dialog.setVisible(true);
     }
 
