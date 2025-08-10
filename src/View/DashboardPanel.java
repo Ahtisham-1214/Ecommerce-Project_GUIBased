@@ -19,6 +19,7 @@ public class DashboardPanel extends JPanel {
     public DashboardPanel(String title, User user) {
         this.currentUser = user;
         setLayout(new GridBagLayout());
+        setOpaque(false); // We'll paint a gradient background
         SwingUtilities.invokeLater(() -> {
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
             if (parentFrame != null) {
@@ -27,7 +28,6 @@ public class DashboardPanel extends JPanel {
         });
 
         setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height));
-        setBackground(new Color(81, 4, 4));
 
         // GridBagConstraints for layout management
         GridBagConstraints gbc = new GridBagConstraints();
@@ -36,11 +36,19 @@ public class DashboardPanel extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.NORTH;
 
+        // Welcome message
+        String welcome = "Welcome" + (user != null && user.getFullName() != null ? ", " + user.getFullName() : "!");
+        JLabel welcomeLabel = new JLabel(welcome);
+        welcomeLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        welcomeLabel.setForeground(new Color(81, 4, 4));
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.NORTH;
+        add(welcomeLabel, gbc);
 
-        // Add card-like labels with images
-        JPanel userCardPanel = createUserCardPanel();
-        JPanel productCardPanel = createProductCardPanel();
-        JPanel cartCardPanel = createCartCardPanel();
+        // Add card-like labels with images and hover effect
+        JPanel userCardPanel = createHoverableCard(createUserCardPanel());
+        JPanel productCardPanel = createHoverableCard(createProductCardPanel());
+        JPanel cartCardPanel = createHoverableCard(createCartCardPanel());
 
         // Create a panel to hold all cards side by side
         JPanel cardsContainer = new JPanel(new GridLayout(1, 3, 20, 0));
@@ -55,6 +63,59 @@ public class DashboardPanel extends JPanel {
 
         // Set panel properties
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    }
+
+    // Paint a subtle vertical gradient background
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        int w = getWidth();
+        int h = getHeight();
+        Color color1 = new Color(255, 245, 245);
+        Color color2 = new Color(245, 235, 235);
+        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, w, h);
+    }
+
+    // Wrap a card panel to add hover effect (scale and shadow)
+    private JPanel createHoverableCard(JPanel card) {
+        JPanel wrapper = new JPanel(new BorderLayout()) {
+            float scale = 1.0f;
+            boolean hovered = false;
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                if (hovered) {
+                    g2.setColor(new Color(220, 220, 220, 80));
+                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+                }
+                g2.dispose();
+                super.paintComponent(g);
+            }
+        };
+        wrapper.setOpaque(false);
+        wrapper.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        wrapper.add(card, BorderLayout.CENTER);
+        wrapper.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                card.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(156, 37, 37), 2),
+                        BorderFactory.createEmptyBorder(13, 13, 13, 13)));
+                wrapper.repaint();
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                card.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+                        BorderFactory.createEmptyBorder(15, 15, 15, 15)));
+                wrapper.repaint();
+            }
+        });
+        return wrapper;
     }
 
     private JPanel createUserCardPanel() {
