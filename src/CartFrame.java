@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+//code for cart 
 public class CartFrame {
     private static JTable table;
     private static JLabel subtotalLabel;
